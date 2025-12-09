@@ -28,7 +28,7 @@ class Command(BaseCommand):
             }
         )
         if created:
-            admin.set_password('password123')
+            admin.set_password(os.environ.get('ADMIN_PASSWORD', 'change_this_password_immediately'))
             admin.save()
         
         # Create stores
@@ -46,7 +46,7 @@ class Command(BaseCommand):
                      'role': 'store_manager', 'store': store1}
         )
         if created:
-            manager.set_password('password123')
+            manager.set_password(os.environ.get('MANAGER_PASSWORD', 'change_this_password_immediately'))
             manager.save()
             
         receiver, created = User.objects.get_or_create(
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                      'role': 'stock_receiver', 'store': store1}
         )
         if created:
-            receiver.set_password('password123')
+            receiver.set_password(os.environ.get('RECEIVER_PASSWORD', 'change_this_password_immediately'))
             receiver.save()
             
         staff, created = User.objects.get_or_create(
@@ -64,7 +64,7 @@ class Command(BaseCommand):
                      'role': 'shelf_staff', 'store': store1}
         )
         if created:
-            staff.set_password('password123')
+            staff.set_password(os.environ.get('STAFF_PASSWORD', 'change_this_password_immediately'))
             staff.save()
             
         auditor, created = User.objects.get_or_create(
@@ -73,7 +73,7 @@ class Command(BaseCommand):
                      'role': 'auditor', 'store': store1}
         )
         if created:
-            auditor.set_password('password123')
+            auditor.set_password(os.environ.get('AUDITOR_PASSWORD', 'change_this_password_immediately'))
             auditor.save()
         
         # Create category & supplier
@@ -173,7 +173,7 @@ class Command(BaseCommand):
         )
         
         self.stdout.write(self.style.SUCCESS('\n✅ Test data created!'))
-        self.stdout.write('\nAccounts (all password: password123):')
+        self.stdout.write('\nAccounts created with environment-defined passwords.')
         self.stdout.write('  manager@example.com - Store Manager')
         self.stdout.write('  receiver@example.com - Stock Receiver')
         self.stdout.write('  staff@example.com - Shelf Staff')

@@ -76,17 +76,53 @@ CREATE USER postgres WITH PASSWORD 'postgres';
 GRANT ALL PRIVILEGES ON DATABASE supermarket_db TO postgres;
 ```
 
-### 5. Environment Variables (Optional)
+### 5. Environment Variables (REQUIRED for Security)
 
-Create a `.env` file in the project root:
+**⚠️ IMPORTANT: Never commit the `.env` file to version control!**
+
+Create a `.env` file in the project root with secure values:
 ```env
+# Django Settings
+DEBUG=False
+SECRET_KEY=your-secure-secret-key-here
+
+# Database Configuration
 DB_NAME=supermarket_db
 DB_USER=postgres
-DB_PASSWORD=postgres
+DB_PASSWORD=your_secure_db_password_here
 DB_HOST=localhost
 DB_PORT=5432
-SECRET_KEY=your-secret-key-here
-DEBUG=True
+
+# Test Account Passwords (for development only - change immediately)
+ADMIN_PASSWORD=change_this_password_immediately
+MANAGER_PASSWORD=change_this_password_immediately
+RECEIVER_PASSWORD=change_this_password_immediately
+STAFF_PASSWORD=change_this_password_immediately
+AUDITOR_PASSWORD=change_this_password_immediately
+
+# Security Settings
+ALLOWED_HOSTS=localhost,127.0.0.1,yourdomain.com
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080,https://yourdomain.com
+
+# Email Configuration
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password-here
+DEFAULT_FROM_EMAIL=noreply@supermarket.com
+
+# Firebase Configuration (if using push notifications)
+FCM_SERVER_KEY=your-fcm-server-key-here
+FCM_PROJECT_ID=super-market-helper
+
+# API Keys (if using currency conversion)
+FIXER_IO_API_KEY=your-fixer-api-key-here
+OPENEXCHANGERATES_API_KEY=your-openexchangerates-api-key-here
+```
+
+**Generate a secure SECRET_KEY:**
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
 ### 6. Run Migrations

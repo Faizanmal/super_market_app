@@ -51,7 +51,7 @@ class LocalStorageService {
     final defaultUser = User(
       id: 'admin-001',
       email: 'admin@supermart.com',
-      password: 'admin123', // In production, use proper hashing
+      password: '', // Password will be set during first login
       fullName: 'Admin User',
       role: 'admin',
       createdAt: DateTime.now(),

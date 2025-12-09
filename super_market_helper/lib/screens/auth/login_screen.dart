@@ -178,42 +178,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
 
-                    // Demo Credentials Info
-                    const SizedBox(height: 32),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppTheme.infoColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: AppTheme.infoColor.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.info_outline,
-                                size: 20,
-                                color: AppTheme.infoColor,
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Demo Credentials',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Email: admin@supermart.com\nPassword: admin123',
-                            style: TextStyle(fontSize: 12),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),

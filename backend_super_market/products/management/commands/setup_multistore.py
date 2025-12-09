@@ -93,11 +93,11 @@ class Command(BaseCommand):
             admin_user = User.objects.create_superuser(
                 username='admin',
                 email='admin@supermarket.com',
-                password='admin123',
+                password=os.environ.get('ADMIN_PASSWORD', 'change_this_password_immediately'),
                 first_name='System',
                 last_name='Administrator'
             )
-            self.stdout.write('Created admin user: admin/admin123')
+            self.stdout.write('Created admin user: admin (password from environment variable)')
         
         return admin_user
 
