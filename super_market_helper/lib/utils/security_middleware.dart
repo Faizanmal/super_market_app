@@ -43,10 +43,6 @@ class SecurityMiddleware {
     try {
       return await _localAuth.authenticate(
         localizedReason: reason,
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: true,
-        ),
       );
     } catch (e) {
       debugPrint('Biometric authentication error: $e');

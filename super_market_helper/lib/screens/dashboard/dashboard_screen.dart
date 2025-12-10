@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:excel/excel.dart';
+import 'package:intl/intl.dart';
+import 'package:cross_file/cross_file.dart';
 import '../../providers/product_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../config/theme.dart';
@@ -263,11 +271,70 @@ class _DashboardHome extends StatelessWidget {
                             context,
                             icon: Icons.file_download_outlined,
                             label: 'Export Data',
+                            onPressed: () async {
+                              await _showExportDialog(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              
+              // New Features Section
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.auto_awesome, color: Theme.of(context).colorScheme.tertiary),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Smart Features',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          _buildActionButton(
+                            context,
+                            icon: Icons.discount_rounded,
+                            label: 'Batch Discounts',
                             onPressed: () {
-                              // TODO: Implement export
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Export feature coming soon')),
-                              );
+                              Navigator.of(context).pushNamed('/batch-discounts');
+                            },
+                          ),
+                          _buildActionButton(
+                            context,
+                            icon: Icons.auto_graph_rounded,
+                            label: 'AI Forecasting',
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/sales-forecasting');
+                            },
+                          ),
+                          _buildActionButton(
+                            context,
+                            icon: Icons.people_rounded,
+                            label: 'Customer Hub',
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/customer-hub');
+                            },
+                          ),
+                          _buildActionButton(
+                            context,
+                            icon: Icons.stars_rounded,
+                            label: 'Staff Performance',
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/gamification');
                             },
                           ),
                         ],
@@ -343,5 +410,230 @@ class _DashboardHome extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     );
+  }
+
+  Future<void> _showExportDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Export Data'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Select export format:'),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.table_chart),
+              title: const Text('CSV (Excel)'),
+              subtitle: const Text('Comma-separated values'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _exportAsCSV(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.picture_as_pdf),
+              title: const Text('PDF Report'),
+              subtitle: const Text('Professional report'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _exportAsPDF(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.grid_on),
+              title: const Text('Excel Workbook'),
+              subtitle: const Text('Full feature spreadsheet'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _exportAsExcel(context);
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _exportAsCSV(BuildContext context) async {
+    try {
+      final provider = context.read<ProductProvider>();
+      final products = provider.products;
+      
+      // Create CSV content
+      final buffer = StringBuffer();
+      buffer.writeln('Name,SKU,Category,Stock,Price,Expiry Date');
+      
+      for (final product in products) {
+        buffer.writeln('${product.name},${product.sku},${product.category},${product.stockQuantity},${product.price},${product.expiryDate ?? 'N/A'}');
+      }
+      
+      // Save and share
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/inventory_export_${DateTime.now().millisecondsSinceEpoch}.csv');
+      await file.writeAsString(buffer.toString());
+      
+      await Share.shareXFiles([XFile(file.path)], text: 'Inventory Export');
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('CSV exported successfully')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export failed: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _exportAsPDF(BuildContext context) async {
+    try {
+      final provider = context.read<ProductProvider>();
+      final products = provider.products;
+      final stats = provider.getStatistics();
+      
+      final pdf = pw.Document();
+      
+      pdf.addPage(
+        pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          build: (context) => [
+            pw.Header(
+              level: 0,
+              child: pw.Text('Inventory Report', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Text('Generated: ${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())}'),
+            pw.SizedBox(height: 20),
+            pw.Text('Summary Statistics', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 10),
+            pw.Table.fromTextArray(
+              data: [
+                ['Metric', 'Value'],
+                ['Total Products', '${stats['totalProducts']}'],
+                ['Stock Value', '\$${(stats['totalStockValue'] as double).toStringAsFixed(2)}'],
+                ['Low Stock Items', '${stats['lowStockCount']}'],
+                ['Expiring Soon', '${stats['expiringCount']}'],
+              ],
+            ),
+            pw.SizedBox(height: 20),
+            pw.Text('Product List', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+            pw.SizedBox(height: 10),
+            pw.Table.fromTextArray(
+              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              cellAlignment: pw.Alignment.centerLeft,
+              data: [
+                ['Name', 'SKU', 'Stock', 'Price'],
+                ...products.map((p) => [p.name, p.sku, '${p.stockQuantity}', '\$${p.price.toStringAsFixed(2)}']),
+              ],
+            ),
+          ],
+        ),
+      );
+      
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/inventory_report_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      await file.writeAsBytes(await pdf.save());
+      
+      await Share.shareXFiles([XFile(file.path)], text: 'Inventory Report');
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('PDF exported successfully')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export failed: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _exportAsExcel(BuildContext context) async {
+    try {
+      final provider = context.read<ProductProvider>();
+      final products = provider.products;
+      final stats = provider.getStatistics();
+      
+      var excel = Excel.createExcel();
+      
+      // Summary sheet
+      Sheet summarySheet = excel['Summary'];
+      summarySheet.appendRow([
+        TextCellValue('Inventory Summary Report'),
+      ]);
+      summarySheet.appendRow([
+        TextCellValue('Generated: ${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())}'),
+      ]);
+      summarySheet.appendRow([]);
+      summarySheet.appendRow([
+        TextCellValue('Total Products'),
+        IntCellValue(stats['totalProducts'] as int),
+      ]);
+      summarySheet.appendRow([
+        TextCellValue('Stock Value'),
+        DoubleCellValue((stats['totalStockValue'] as double)),
+      ]);
+      summarySheet.appendRow([
+        TextCellValue('Low Stock Items'),
+        IntCellValue(stats['lowStockCount'] as int),
+      ]);
+      summarySheet.appendRow([
+        TextCellValue('Expiring Soon'),
+        IntCellValue(stats['expiringCount'] as int),
+      ]);
+      
+      // Products sheet
+      Sheet productsSheet = excel['Products'];
+      productsSheet.appendRow([
+        TextCellValue('Name'),
+        TextCellValue('SKU'),
+        TextCellValue('Category'),
+        TextCellValue('Stock Quantity'),
+        TextCellValue('Price'),
+        TextCellValue('Expiry Date'),
+      ]);
+      
+      for (final product in products) {
+        productsSheet.appendRow([
+          TextCellValue(product.name),
+          TextCellValue(product.sku),
+          TextCellValue(product.category ?? 'N/A'),
+          IntCellValue(product.stockQuantity),
+          DoubleCellValue(product.price),
+          TextCellValue(product.expiryDate?.toString() ?? 'N/A'),
+        ]);
+      }
+      
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/inventory_${DateTime.now().millisecondsSinceEpoch}.xlsx');
+      await file.writeAsBytes(excel.encode()!);
+      
+      await Share.shareXFiles([XFile(file.path)], text: 'Inventory Workbook');
+      
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Excel exported successfully')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export failed: $e')),
+        );
+      }
+    }
   }
 }

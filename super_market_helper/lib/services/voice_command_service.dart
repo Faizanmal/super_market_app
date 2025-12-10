@@ -74,7 +74,7 @@ class VoiceCommandService {
         if (result.finalResult) {
           final text = result.recognizedWords.toLowerCase();
           onResult(text);
-          _processCommand(text);
+          processCommand(text);
         }
       },
       listenFor: const Duration(seconds: 30),
@@ -104,7 +104,7 @@ class VoiceCommandService {
   }
 
   /// Process voice command and return action
-  VoiceCommand? _processCommand(String text) {
+  VoiceCommand? processCommand(String text) {
     final lowercaseText = text.toLowerCase();
 
     // Search commands

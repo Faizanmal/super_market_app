@@ -68,6 +68,7 @@ from .sustainability_views import (
     SustainabilityInitiativeViewSet,
     GreenSupplierRatingViewSet,
 )
+from .gamification_views import GamificationViewSet, BadgeViewSet
 
 app_name = 'products'
 
@@ -144,6 +145,10 @@ router.register(r'waste-records', WasteRecordViewSet, basename='waste-record')
 router.register(r'sustainability-initiatives', SustainabilityInitiativeViewSet, basename='sustainability-initiative')
 router.register(r'green-supplier-ratings', GreenSupplierRatingViewSet, basename='green-supplier-rating')
 
+# Gamification
+router.register(r'gamification', GamificationViewSet, basename='gamification')
+router.register(r'badges', BadgeViewSet, basename='badge')
+
 urlpatterns = [
     path('', include(router.urls)),
     
@@ -170,5 +175,11 @@ urlpatterns = [
     path('barcode/', include([
         path('generate/', include('products.barcode_urls')),
     ])),
+    
+    # New Features - Batch Discounts, Sales Forecasting, Customer Features
+    path('features/', include('products.new_features_urls')),
+    
+    # Customer App, AI Chatbot, Staff Management, Payments
+    path('v2/', include('products.new_features_urls_v2')),
 ]
  

@@ -9,11 +9,17 @@ import 'providers/auth_provider.dart';
 import 'providers/expiry_provider.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/dashboard/dashboard_screen.dart';
+import 'screens/enhanced_dashboard_screen.dart';
 import 'screens/alerts/alerts_screen.dart';
 import 'screens/smart_pricing/smart_pricing_screen.dart';
 import 'screens/iot/iot_dashboard_screen.dart';
 import 'screens/sustainability/sustainability_dashboard_screen.dart';
 import 'screens/suppliers/supplier_portal_screen.dart';
+// New Feature Screens
+import 'screens/discounts/batch_discount_screen.dart';
+import 'screens/forecasting/sales_forecasting_screen.dart';
+import 'screens/customer/customer_hub_screen.dart';
+import 'screens/gamification/gamification_dashboard.dart';
 
 /// Main entry point for the SuperMart Manager application
 void main() async {
@@ -61,18 +67,24 @@ class SuperMartApp extends StatelessWidget {
             
             // Set initial route based on authentication status
             home: authProvider.isLoggedIn
-                ? const DashboardScreen()
+                ? const EnhancedDashboardScreen()
                 : const LoginScreen(),
             
             // Define named routes
             routes: {
               '/login': (context) => const LoginScreen(),
-              '/dashboard': (context) => const DashboardScreen(),
+              '/dashboard': (context) => const EnhancedDashboardScreen(),
+              '/dashboard-simple': (context) => const DashboardScreen(),
               '/alerts': (context) => const AlertsScreen(),
               '/smart-pricing': (context) => const SmartPricingScreen(),
               '/iot-dashboard': (context) => const IoTDashboardScreen(),
               '/sustainability': (context) => const SustainabilityDashboardScreen(),
               '/supplier-portal': (context) => const SupplierPortalScreen(),
+              // New Feature Routes
+              '/batch-discounts': (context) => const BatchDiscountScreen(),
+              '/sales-forecasting': (context) => const SalesForecastingScreen(),
+              '/customer-hub': (context) => const CustomerHubScreen(),
+              '/gamification': (context) => const GamificationDashboard(),
             },
             
             // Builder for responsive layout

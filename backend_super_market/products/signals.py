@@ -7,7 +7,8 @@ from django.contrib.auth import get_user_model
 
 from .models import (
     Product, PriceHistory, AuditLog, Notification,
-    PurchaseOrder, InventoryAdjustment
+    PurchaseOrder, InventoryAdjustment, Task,
+    GamificationProfile, PointTransaction, Badge, UserBadge
 )
 
 User = get_user_model()
@@ -336,3 +337,97 @@ def suggest_reorder(sender, instance, created, **kwargs):
                         product=instance,
                         action_url=f"/products/{instance.id}/"
                     )
+
+# Gamification Signals
+
+@receiver(post_save, sender=User)
+def create_gamification_profile(sender, instance, created, **kwargs):
+    """
+    Create a GamificationProfile for every new user.
+    """
+    if created:
+        GamificationProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=Task)
+def award_points_for_task(sender, instance, created, **kwargs):
+    """
+    Award points when a task is completed.
+    """
+    if not created and instance.status == 'completed' and instance.assigned_to:
+        # Check if points already awarded to avoid duplicates (could use a flag or transaction log check)
+        # For simplicity, we assume the status change triggers this once.
+        # Ideally, we should check if a 'task_completion' transaction exists for this task ID.
+        
+        # Simple check: has this task been rewarded?
+        # We can look for a transaction with description containing task ID or similar.
+        # Or simpler: The Task model could have a 'points_awarded' boolean field.
+        # Since we can't easily modify Task model right now without migration, we'll try to check logs.
+        
+        task_ref = f"Task-{instance.id}"
+        already_awarded = PointTransaction.objects.filter(
+            user=instance.assigned_to,
+            description__contains=task_ref
+        ).exists()
+        
+        if not already_awarded:
+            profile, _ = GamificationProfile.objects.get_or_create(user=instance.assigned_to)
+            
+            # Points logic
+            points = 50 # Base points
+            if instance.priority == 'urgent':
+                points += 50
+            elif instance.priority == 'high':
+                points += 25
+            
+            # Award points
+            profile.add_points(points)
+            profile.total_tasks_completed += 1
+            profile.save()
+            
+            # Log transaction
+            PointTransaction.objects.create(
+                user=instance.assigned_to,
+                points=points,
+                transaction_type='task',
+                description=f"Completed {task_ref}: {instance.title}"
+            )
+            
+            # Check for badges
+            check_task_badges(instance.assigned_to, profile)
+
+def check_task_badges(user, profile):
+    """
+    Check and award badges based on task completion.
+    """
+    # Example: First Task
+    if profile.total_tasks_completed == 1:
+        award_badge(user, 'First Task', 'Completed your first task!')
+        
+    # Example: Task Master (100 tasks)
+    if profile.total_tasks_completed == 100:
+        award_badge(user, 'Task Master', 'Completed 100 tasks!')
+
+def award_badge(user, badge_name, description=""):
+    """
+    Helper to award a badge if not already owned.
+    """
+    try:
+        badge = Badge.objects.get(name=badge_name)
+    except Badge.DoesNotExist:
+        # Auto-create for simplicity if it doesn't exist (or just return)
+        # In prod, badges should be pre-seeded.
+        return
+
+    if not UserBadge.objects.filter(user=user, badge=badge).exists():
+        UserBadge.objects.create(user=user, badge=badge)
+        
+        # Bonus XP for badge
+        profile = user.gamification_profile
+        profile.add_points(badge.xp_reward)
+        
+        PointTransaction.objects.create(
+            user=user,
+            points=badge.xp_reward,
+            transaction_type='badge',
+            description=f"Earned badge: {badge.name}"
+        )

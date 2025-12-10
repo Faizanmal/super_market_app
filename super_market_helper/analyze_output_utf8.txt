@@ -1,0 +1,256 @@
+﻿Analyzing super_market_helper...                                
+
+   info - Dangling library doc comment - lib\app_routes.dart:1:1 - dangling_library_doc_comments
+warning - Unused import: 'package:flutter/foundation.dart' - lib\config\constants.dart:1:8 - unused_import
+   info - 'encryptedSharedPreferences' is deprecated and shouldn't be used. EncryptedSharedPreferences is deprecated and will be removed in v11. The Jetpack Security library is deprecated by Google. Your data will be automatically migrated to custom ciphers on first access. Remove this parameter - it will be ignored - lib\core\storage\secure_storage.dart:12:7 - deprecated_member_use
+  error - Target of URI hasn't been generated: 'package:super_market_helper/models/gamification_model.g.dart' - lib\models\gamification_model.dart:3:6 - uri_has_not_been_generated
+  error - The method '_$GamificationProfileFromJson' isn't defined for the type 'GamificationProfile' - lib\models\gamification_model.dart:41:7 - undefined_method
+  error - The method '_$GamificationProfileToJson' isn't defined for the type 'GamificationProfile' - lib\models\gamification_model.dart:43:36 - undefined_method
+  error - The method '_$BadgeFromJson' isn't defined for the type 'Badge' - lib\models\gamification_model.dart:69:56 - undefined_method
+  error - The method '_$BadgeToJson' isn't defined for the type 'Badge' - lib\models\gamification_model.dart:71:36 - undefined_method
+  error - The method '_$UserBadgeFromJson' isn't defined for the type 'UserBadge' - lib\models\gamification_model.dart:89:7 - undefined_method
+  error - The method '_$UserBadgeToJson' isn't defined for the type 'UserBadge' - lib\models\gamification_model.dart:91:36 - undefined_method
+  error - The method '_$PointTransactionFromJson' isn't defined for the type 'PointTransaction' - lib\models\gamification_model.dart:113:7 - undefined_method
+  error - The method '_$PointTransactionToJson' isn't defined for the type 'PointTransaction' - lib\models\gamification_model.dart:115:36 - undefined_method
+  error - Classes can only extend other classes - lib\providers\app_providers.dart:110:28 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\providers\app_providers.dart:111:26 - extra_positional_arguments
+  error - Undefined name 'state' - lib\providers\app_providers.dart:114:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:114:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:128:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:130:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:138:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:138:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:157:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:165:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:165:15 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:174:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:174:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:179:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:181:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:186:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:186:13 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\providers\app_providers.dart:191:22 - undefined_function
+  error - Classes can only extend other classes - lib\providers\app_providers.dart:386:35 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\providers\app_providers.dart:387:33 - extra_positional_arguments
+  error - Undefined name 'state' - lib\providers\app_providers.dart:390:9 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:393:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:393:15 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:401:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:401:15 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:430:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:430:15 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:431:48 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:434:22 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:438:7 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:438:15 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:448:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:448:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:453:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:453:13 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\providers\app_providers.dart:459:29 - undefined_function
+  error - The function 'StateProvider' isn't defined - lib\providers\app_providers.dart:464:33 - undefined_function
+  error - Classes can only extend other classes - lib\providers\app_providers.dart:657:32 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\providers\app_providers.dart:658:30 - extra_positional_arguments
+  error - Undefined name 'state' - lib\providers\app_providers.dart:661:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:661:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:661:39 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:665:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:665:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:669:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:669:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:669:51 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:673:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:673:13 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:673:47 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:677:5 - undefined_identifier
+  error - Undefined name 'state' - lib\providers\app_providers.dart:677:13 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\providers\app_providers.dart:682:26 - undefined_function
+  error - The function 'StateProvider' isn't defined - lib\providers\app_providers.dart:700:30 - undefined_function
+   info - Dangling library doc comment - lib\screens\ai_assistant\ai_chat_screen.dart:1:1 - dangling_library_doc_comments
+   info - The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\ai_assistant\ai_chat_screen.dart:5:8 - unnecessary_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\ai_assistant\ai_chat_screen.dart:165:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\ai_assistant\ai_chat_screen.dart:297:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\ai_assistant\ai_chat_screen.dart:399:58 - deprecated_member_use
+   info - The import of 'package:cross_file/cross_file.dart' is unnecessary because all of the used elements are also provided by the import of 'package:share_plus/share_plus.dart' - lib\screens\analytics\enhanced_analytics_screen.dart:8:8 - unnecessary_import
+   info - The imported package 'cross_file' isn't a dependency of the importing package - lib\screens\analytics\enhanced_analytics_screen.dart:8:8 - depend_on_referenced_packages
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\analytics\enhanced_analytics_screen.dart:1425:15 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\analytics\enhanced_analytics_screen.dart:1425:21 - deprecated_member_use
+  error - Expected an identifier - lib\screens\analytics\enhanced_analytics_screen.dart:1439:37 - missing_identifier
+  error - Expected to find ']' - lib\screens\analytics\enhanced_analytics_screen.dart:1440:102 - expected_token
+  error - Expected an identifier - lib\screens\analytics\enhanced_analytics_screen.dart:1451:42 - missing_identifier
+  error - Expected to find ']' - lib\screens\analytics\enhanced_analytics_screen.dart:1452:104 - expected_token
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\analytics\enhanced_analytics_screen.dart:1466:15 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\analytics\enhanced_analytics_screen.dart:1466:21 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\checkout\self_checkout_screen.dart:1:1 - dangling_library_doc_comments
+warning - Unused import: '../../services/api_service.dart' - lib\screens\checkout\self_checkout_screen.dart:6:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\checkout\self_checkout_screen.dart:167:39 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\compliance\compliance_dashboard_screen.dart:1:1 - dangling_library_doc_comments
+warning - Unused import: '../../services/api_service.dart' - lib\screens\compliance\compliance_dashboard_screen.dart:5:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\compliance\compliance_dashboard_screen.dart:360:26 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\compliance\compliance_dashboard_screen.dart:391:34 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\compliance\compliance_dashboard_screen.dart:398:34 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\compliance\compliance_dashboard_screen.dart:478:34 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\compliance\compliance_dashboard_screen.dart:657:28 - deprecated_member_use
+warning - The value of the field '_customerService' isn't used - lib\screens\customer\customer_hub_screen.dart:18:33 - unused_field
+   info - Dangling library doc comment - lib\screens\customer\customer_profile_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\customer\customer_profile_screen.dart:197:35 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\customer\loyalty_dashboard_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\customer\loyalty_dashboard_screen.dart:147:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\customer\loyalty_dashboard_screen.dart:203:51 - deprecated_member_use
+   info - The import of 'package:cross_file/cross_file.dart' is unnecessary because all of the used elements are also provided by the import of 'package:share_plus/share_plus.dart' - lib\screens\dashboard\dashboard_screen.dart:10:8 - unnecessary_import
+   info - The imported package 'cross_file' isn't a dependency of the importing package - lib\screens\dashboard\dashboard_screen.dart:10:8 - depend_on_referenced_packages
+  error - The getter 'sku' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:475:51 - undefined_getter
+  error - The getter 'stockQuantity' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:475:86 - undefined_getter
+  error - The getter 'price' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:475:111 - undefined_getter
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\dashboard\dashboard_screen.dart:475:142 - dead_null_aware_expression
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\dashboard\dashboard_screen.dart:483:13 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\dashboard\dashboard_screen.dart:483:19 - deprecated_member_use
+   info - 'Table.fromTextArray' is deprecated and shouldn't be used. Use TableHelper.fromTextArray() instead - lib\screens\dashboard\dashboard_screen.dart:520:13 - deprecated_member_use
+   info - 'Table.fromTextArray' is deprecated and shouldn't be used. Use TableHelper.fromTextArray() instead - lib\screens\dashboard\dashboard_screen.dart:532:13 - deprecated_member_use
+  error - The getter 'sku' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:537:51 - undefined_getter
+  error - The getter 'stockQuantity' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:537:61 - undefined_getter
+  error - The getter 'price' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:537:85 - undefined_getter
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\dashboard\dashboard_screen.dart:548:13 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\dashboard\dashboard_screen.dart:548:19 - deprecated_member_use
+  error - The getter 'sku' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:612:33 - undefined_getter
+warning - The left operand can't be null, so the right operand is never executed - lib\screens\dashboard\dashboard_screen.dart:613:45 - dead_null_aware_expression
+  error - The getter 'stockQuantity' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:614:32 - undefined_getter
+  error - The getter 'price' isn't defined for the type 'Product' - lib\screens\dashboard\dashboard_screen.dart:615:35 - undefined_getter
+warning - The receiver can't be null, so the null-aware operator '?.' is unnecessary - lib\screens\dashboard\dashboard_screen.dart:616:43 - invalid_null_aware_operator
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\screens\dashboard\dashboard_screen.dart:624:13 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\screens\dashboard\dashboard_screen.dart:624:19 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\deals\deals_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\deals\deals_screen.dart:170:49 - deprecated_member_use
+warning - The value of the field '_discountService' isn't used - lib\screens\discounts\batch_discount_screen.dart:19:30 - unused_field
+warning - The value of the local variable 'analyticsData' isn't used - lib\screens\discounts\batch_discount_screen.dart:915:11 - unused_local_variable
+warning - The value of the field '_forecastService' isn't used - lib\screens\forecasting\sales_forecasting_screen.dart:19:33 - unused_field
+   info - Parameter 'key' could be a super parameter - lib\screens\gamification\gamification_dashboard.dart:7:9 - use_super_parameters
+  error - The name 'Badge' is defined in the libraries 'package:flutter/src/material/badge.dart (via package:flutter/material.dart)' and 'package:super_market_helper/models/gamification_model.dart' - lib\screens\gamification\gamification_dashboard.dart:19:8 - ambiguous_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\gamification\gamification_dashboard.dart:96:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\gamification\gamification_dashboard.dart:162:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\gamification\gamification_dashboard.dart:162:97 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\gamification\gamification_dashboard.dart:196:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\gamification\gamification_dashboard.dart:210:63 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\marketing\marketing_dashboard_screen.dart:1:1 - dangling_library_doc_comments
+warning - Unused import: '../../services/api_service.dart' - lib\screens\marketing\marketing_dashboard_screen.dart:5:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\marketing\marketing_dashboard_screen.dart:189:71 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\marketing\marketing_dashboard_screen.dart:436:22 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\marketing\marketing_dashboard_screen.dart:462:59 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\marketing\marketing_dashboard_screen.dart:542:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\marketing\marketing_dashboard_screen.dart:725:43 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\navigation\store_map_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\navigation\store_map_screen.dart:147:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\navigation\store_map_screen.dart:274:22 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\navigation\store_map_screen.dart:276:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\navigation\store_map_screen.dart:395:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\navigation\store_map_screen.dart:444:47 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\new_screens.dart:1:1 - dangling_library_doc_comments
+   info - Dangling library doc comment - lib\screens\orders\order_history_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\orders\order_history_screen.dart:195:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\orders\order_history_screen.dart:344:48 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\payment\checkout_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre - lib\screens\payment\checkout_screen.dart:256:23 - deprecated_member_use
+   info - 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre - lib\screens\payment\checkout_screen.dart:257:23 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\recipes\recipe_browser_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\recipes\recipe_browser_screen.dart:215:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\recipes\recipe_browser_screen.dart:287:36 - deprecated_member_use
+   info - Dangling library doc comment - lib\screens\staff\staff_dashboard_screen.dart:1:1 - dangling_library_doc_comments
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\staff\staff_dashboard_screen.dart:147:58 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\staff\staff_dashboard_screen.dart:305:75 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\staff\staff_dashboard_screen.dart:369:70 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\staff\staff_dashboard_screen.dart:414:56 - deprecated_member_use
+warning - Dead code - lib\services\api_service.dart:866:3 - dead_code
+warning - The declaration 'get' isn't referenced - lib\services\api_service.dart:866:32 - unused_element
+warning - The declaration 'post' isn't referenced - lib\services\api_service.dart:876:32 - unused_element
+warning - The declaration 'put' isn't referenced - lib\services\api_service.dart:886:32 - unused_element
+warning - The declaration 'patch' isn't referenced - lib\services\api_service.dart:896:32 - unused_element
+warning - The declaration 'delete' isn't referenced - lib\services\api_service.dart:906:32 - unused_element
+  error - Expected to find '}' - lib\services\api_service.dart:915:2 - expected_token
+warning - Unused import: 'package:dio/dio.dart' - lib\services\batch_discount_service.dart:5:8 - unused_import
+  error - The named parameter 'data' isn't defined - lib\services\batch_discount_service.dart:36:76 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\batch_discount_service.dart:46:79 - undefined_named_parameter
+   info - Dangling library doc comment - lib\services\chatbot_service.dart:1:1 - dangling_library_doc_comments
+warning - Unused import: 'dart:convert' - lib\services\chatbot_service.dart:4:8 - unused_import
+warning - Unused import: 'package:http/http.dart' - lib\services\chatbot_service.dart:5:8 - unused_import
+warning - Unused import: '../config/app_config.dart' - lib\services\chatbot_service.dart:6:8 - unused_import
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:79:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:123:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:142:25 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:152:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:171:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:198:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:217:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\chatbot_service.dart:233:42 - undefined_method
+   info - Dangling library doc comment - lib\services\customer_app_service.dart:1:1 - dangling_library_doc_comments
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:236:40 - undefined_method
+  error - The method 'patch' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:241:23 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:247:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:256:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:264:40 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:274:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:285:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:294:40 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:299:23 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:309:23 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:319:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:337:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:350:40 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:355:23 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:360:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:373:40 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:382:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:394:40 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\customer_app_service.dart:399:40 - undefined_method
+warning - Unused import: 'package:dio/dio.dart' - lib\services\customer_features_service.dart:5:8 - unused_import
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:54:76 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:64:79 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:95:9 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:108:9 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:141:9 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:206:85 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:262:9 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\customer_features_service.dart:279:9 - undefined_named_parameter
+   info - Don't invoke 'print' in production code - lib\services\gamification_service.dart:21:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\gamification_service.dart:37:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\gamification_service.dart:53:7 - avoid_print
+  error - The named parameter 'uiLocalNotificationDateInterpretation' isn't defined - lib\services\notification_service.dart:604:7 - undefined_named_parameter
+  error - Undefined name 'UILocalNotificationDateInterpretation' - lib\services\notification_service.dart:605:11 - undefined_identifier
+   info - Dangling library doc comment - lib\services\payment_service.dart:1:1 - dangling_library_doc_comments
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:230:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:306:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:322:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:336:40 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:347:40 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:353:40 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\payment_service.dart:361:40 - undefined_method
+warning - Unused import: 'package:dio/dio.dart' - lib\services\sales_forecasting_service.dart:5:8 - unused_import
+  error - The named parameter 'data' isn't defined - lib\services\sales_forecasting_service.dart:45:9 - undefined_named_parameter
+  error - The named parameter 'data' isn't defined - lib\services\sales_forecasting_service.dart:71:9 - undefined_named_parameter
+   info - Dangling library doc comment - lib\services\staff_management_service.dart:1:1 - dangling_library_doc_comments
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:176:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:186:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:195:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:208:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:216:40 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:224:40 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:238:23 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:248:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:259:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:268:42 - undefined_method
+  error - The method 'post' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:276:23 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:282:42 - undefined_method
+  error - The method 'get' isn't defined for the type 'ApiService' - lib\services\staff_management_service.dart:292:42 - undefined_method
+  error - The named parameter 'uiLocalNotificationDateInterpretation' isn't defined - lib\services\web\notification_service_web.dart:139:7 - undefined_named_parameter
+  error - Undefined name 'UILocalNotificationDateInterpretation' - lib\services\web\notification_service_web.dart:140:11 - undefined_identifier
+  error - The named parameter 'options' isn't defined - lib\utils\security_middleware.dart:46:9 - undefined_named_parameter
+  error - The name 'AuthenticationOptions' isn't a class - lib\utils\security_middleware.dart:46:24 - creation_with_non_type
+   info - Parameter 'key' could be a super parameter - lib\widgets\common\voice_fab.dart:5:9 - use_super_parameters
+   info - The 'child' argument should be last in widget constructor invocations - lib\widgets\common\voice_fab.dart:127:7 - sort_child_properties_last
+
+flutter : 246 issues found. (ran in 25.9s)
+At line:1 char:1
++ flutter analyze 2>&1 | Out-File -FilePath analyze_output_utf8.txt -En ...
++ ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (246 issues found. (ran in 25.9s):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

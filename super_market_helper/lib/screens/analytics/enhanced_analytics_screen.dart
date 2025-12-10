@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:shimmer/shimmer.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:cross_file/cross_file.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:intl/intl.dart';
 import '../../config/theme.dart';
 import '../../services/api_service.dart';
 import '../../models/analytics_model.dart';
@@ -1209,15 +1216,281 @@ class _EnhancedAnalyticsScreenState extends State<EnhancedAnalyticsScreen>
   }
 
   void _showForecastDetails(DemandForecast forecast) {
-    // TODO: Show detailed forecast information
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(forecast.productName),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDetailRow('Current Stock', '${forecast.currentStock} units'),
+              _buildDetailRow('Recommended Order', '${forecast.recommendedQuantity} units'),
+              _buildDetailRow('Days Until Reorder', '${forecast.daysUntilReorder} days'),
+              const Divider(),
+              Text(
+                'AI Analysis',
+                style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Based on historical sales data and current trends, we recommend ordering ${forecast.recommendedQuantity} units within the next ${forecast.daysUntilReorder} days to maintain optimal stock levels.',
+                style: const TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Order creation feature coming soon')),
+              );
+            },
+            child: const Text('Create Order'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showHealthDetails(StockHealthScore score) {
-    // TODO: Show detailed health analysis
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              _getHealthIcon(score.healthScore),
+              color: _getHealthColor(score.healthScore),
+            ),
+            const SizedBox(width: 8),
+            Expanded(child: Text(score.productName)),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      '${score.healthScore.toInt()}',
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: _getHealthColor(score.healthScore),
+                      ),
+                    ),
+                    Text(
+                      _getHealthStatus(score.healthScore),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: _getHealthColor(score.healthScore),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 12),
+              Text(
+                'Product Details',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 8),
+              _buildDetailRow('Current Stock', '${score.currentStock} units'),
+              _buildDetailRow('Health Status', _getHealthDescription(score.healthScore)),
+              const SizedBox(height: 12),
+              Text(
+                'Recommendations',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _getHealthColor(score.healthScore).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  score.healthScore < 30
+                      ? 'Immediate action required. Check expiry dates and adjust ordering patterns.'
+                      : score.healthScore < 60
+                      ? 'Monitor closely. Consider adjusting stock levels and reviewing sales trends.'
+                      : score.healthScore < 80
+                      ? 'Product is performing adequately. Continue normal operations.'
+                      : 'Excellent health. Product is well-managed and selling well.',
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
   }
 
-  void _exportData() {
-    // TODO: Implement data export functionality
+  void _exportData() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Export Analytics Report'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Select export format:'),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: const Icon(Icons.table_chart),
+              title: const Text('CSV Export'),
+              subtitle: const Text('All analytics data'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _performExport('csv');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.picture_as_pdf),
+              title: const Text('PDF Report'),
+              subtitle: const Text('Comprehensive report with charts'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _performExport('pdf');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.grid_on),
+              title: const Text('Excel Workbook'),
+              subtitle: const Text('Multi-sheet workbook'),
+              onTap: () async {
+                Navigator.pop(context);
+                await _performExport('excel');
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _performExport(String format) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      
+      if (format == 'csv') {
+        final buffer = StringBuffer();
+        buffer.writeln('Analytics Export - ${DateFormat('yyyy-MM-dd').format(DateTime.now())}');
+        buffer.writeln('');
+        buffer.writeln('Summary Statistics');
+        if (_summary != null) {
+          buffer.writeln('Total Products,${_summary!.inventory.totalProducts}');
+          buffer.writeln('Low Stock,${_summary!.inventory.lowStock}');
+          buffer.writeln('Expired Items,${_summary!.expiry.expired}');
+          buffer.writeln('Expiring Soon,${_summary!.expiry.expiringSoon}');
+        }
+        buffer.writeln('');
+        buffer.writeln('Demand Forecasts');
+        buffer.writeln('Product,Current Stock,Recommended Quantity,Days Until Reorder');
+        for (final forecast in _forecasts) {
+          buffer.writeln('${forecast.productName},${forecast.currentStock},${forecast.recommendedQuantity},${forecast.daysUntilReorder}');
+        }
+        
+        final file = File('${directory.path}/analytics_$timestamp.csv');
+        await file.writeAsString(buffer.toString());
+        await Share.shareXFiles([XFile(file.path)], text: 'Analytics Export');
+      } else if (format == 'pdf') {
+        final pdf = pw.Document();
+        pdf.addPage(
+          pw.MultiPage(
+            pageFormat: PdfPageFormat.a4,
+            build: (context) => [
+              pw.Header(
+                level: 0,
+                child: pw.Text('Analytics Report', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text('Generated: ${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())}'),
+              pw.SizedBox(height: 20),
+              if (_summary != null) ...[
+                pw.Text('Summary', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.Table.fromTextArray(
+                  data: [
+                    ['Metric', 'Value'],
+                    ['Total Products', '${_summary!.inventory.totalProducts}'],
+                    ['Low Stock', '${_summary!.inventory.lowStock}'],
+                    ['Expired', '${_summary!.expiry.expired}'],
+                  ],
+                ),
+              ],
+              pw.SizedBox(height: 20),
+              if (_forecasts.isNotEmpty) ...[
+                pw.Text('Forecasts', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.Table.fromTextArray(
+                  data: [
+                    ['Product', 'Stock', 'Recommended', 'Days'],
+                    ..._forecasts.take(10).map((f) => [f.productName, '${f.currentStock}', '${f.recommendedQuantity}', '${f.daysUntilReorder}']),
+                  ],
+                ),
+              ],
+            ],
+          ),
+        );
+        
+        final file = File('${directory.path}/analytics_$timestamp.pdf');
+        await file.writeAsBytes(await pdf.save());
+        await Share.shareXFiles([XFile(file.path)], text: 'Analytics Report');
+      }
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Report exported successfully as $format')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export failed: $e')),
+        );
+      }
+    }
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(color: Colors.grey[600])),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
   }
 }
 

@@ -6,12 +6,13 @@ import '../models/product_model.dart';
 import '../models/shopping_list_model.dart';
 import '../models/analytics_model.dart';
 import '../models/store_models.dart' as store_models;
+import '../config/app_config.dart';
 
 /// Comprehensive API Service for backend communication with JWT authentication,
 /// offline sync, error handling, and all the implemented backend endpoints
 class ApiService {
-  // TODO: Replace with your actual backend URL
-  static const String baseUrl = 'http://localhost:8000/api';
+  // Base URL from configuration
+  static String get baseUrl => AppConfig.apiUrl;
   
   String? _authToken;
   String? _refreshToken;
@@ -552,22 +553,50 @@ class ApiService {
 
   /// Complete task
   Future<Map<String, dynamic>> completeTask(String taskId, {String? notes, File? photo}) async {
-    Map<String, dynamic> body = {};
-    if (notes != null) body['notes'] = notes;
-    
-    // TODO: Implement multipart upload for photo
-    final response = await _makeAuthenticatedRequest(() => 
-      http.post(
+    if (photo != null) {
+      // Multipart upload with photo
+      var request = http.MultipartRequest(
+        'POST',
         Uri.parse('$baseUrl/products/tasks/$taskId/complete/'),
-        headers: _headers,
-        body: jsonEncode(body),
-      )
-    );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      );
+      
+      request.headers.addAll(_headers);
+      if (notes != null) {
+        request.fields['notes'] = notes;
+      }
+      
+      // Add photo file
+      request.files.add(await http.MultipartFile.fromPath(
+        'photo',
+        photo.path,
+      ));
+      
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to complete task: ${response.body}');
+      }
     } else {
-      throw Exception('Failed to complete task');
+      // Simple JSON upload without photo
+      Map<String, dynamic> body = {};
+      if (notes != null) body['notes'] = notes;
+      
+      final response = await _makeAuthenticatedRequest(() => 
+        http.post(
+          Uri.parse('$baseUrl/products/tasks/$taskId/complete/'),
+          headers: _headers,
+          body: jsonEncode(body),
+        )
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to complete task');
+      }
     }
   }
 
@@ -831,4 +860,57 @@ class ApiService {
       throw Exception('Failed to load store performance metrics');
     }
   }
+
+  // ==================== Generic HTTP Methods ====================
+
+  /// Generic GET request
+  Future<Map<String, dynamic>> get(String path, {Map<String, String>? queryParams, Map<String, String>? extraHeaders}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final response = await _makeAuthenticatedRequest(() => http.get(uri, headers: {..._headers, if (extraHeaders != null) ...extraHeaders}));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
+    throw Exception('GET request failed: ${response.body}');
+  }
+
+  /// Generic POST request
+  Future<Map<String, dynamic>> post(String path, {Map<String, dynamic>? body, Map<String, String>? queryParams, Map<String, String>? extraHeaders}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final response = await _makeAuthenticatedRequest(() => http.post(uri, headers: {..._headers, if (extraHeaders != null) ...extraHeaders}, body: jsonEncode(body)));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
+    throw Exception('POST request failed: ${response.body}');
+  }
+
+  /// Generic PUT request
+  Future<Map<String, dynamic>> put(String path, {Map<String, dynamic>? body, Map<String, String>? queryParams, Map<String, String>? extraHeaders}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final response = await _makeAuthenticatedRequest(() => http.put(uri, headers: {..._headers, if (extraHeaders != null) ...extraHeaders}, body: jsonEncode(body)));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
+    throw Exception('PUT request failed: ${response.body}');
+  }
+
+  /// Generic PATCH request
+  Future<Map<String, dynamic>> patch(String path, {Map<String, dynamic>? body, Map<String, String>? queryParams, Map<String, String>? extraHeaders}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final response = await _makeAuthenticatedRequest(() => http.patch(uri, headers: {..._headers, if (extraHeaders != null) ...extraHeaders}, body: jsonEncode(body)));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
+    throw Exception('PATCH request failed: ${response.body}');
+  }
+
+  /// Generic DELETE request
+  Future<Map<String, dynamic>> delete(String path, {Map<String, String>? queryParams, Map<String, String>? extraHeaders}) async {
+    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final response = await _makeAuthenticatedRequest(() => http.delete(uri, headers: {..._headers, if (extraHeaders != null) ...extraHeaders}));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
+    throw Exception('DELETE request failed: ${response.body}');
+  }
+
 }

@@ -173,6 +173,7 @@ public
 # Temporary folders
 tmp/
 temp/
+`temp/
 
 # Android specific
 gradle-wrapper.jar

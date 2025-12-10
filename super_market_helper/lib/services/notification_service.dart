@@ -13,7 +13,7 @@ import '../services/api_service.dart';
 import '../config/constants.dart';
 
 /// Enhanced notification service for handling:
-/// - Firebase Cloud Messaging (FCM) push notifications
+/// - Firebase Cloud Messaging (FCM) push notifications (mobile only)
 /// - Local notifications with custom sounds and actions
 /// - Notification preferences and settings
 /// - Background notification handling
@@ -21,9 +21,14 @@ import '../config/constants.dart';
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
-  NotificationService._internal();
+  NotificationService._internal() {
+    // On web, skip Firebase entirely
+    if (!kIsWeb) {
+      _firebaseMessaging = FirebaseMessaging.instance;
+    }
+  }
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FirebaseMessaging? _firebaseMessaging;
   final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
   final ApiService _apiService = ApiService();
 
@@ -51,21 +56,27 @@ class NotificationService {
 
       // Initialize local notifications
       await _initializeLocalNotifications();
-      
-      // Initialize Firebase messaging
-      await _initializeFirebaseMessaging();
-      
+
+      // Initialize Firebase messaging only on non-web platforms
+      if (!kIsWeb) {
+        await _initializeFirebaseMessaging();
+      } else {
+        debugPrint('Web platform detected - Firebase messaging disabled');
+      }
+
       // Request permissions
       await _requestPermissions();
-      
-      // Get FCM token and register with backend
-      await _registerFCMToken();
-      
+
+      // Get FCM token and register with backend (only if Firebase is available)
+      if (!kIsWeb && _firebaseMessaging != null) {
+        await _registerFCMToken();
+      }
+
       // Set up message handlers
       _setupMessageHandlers();
-      
+
       _initialized = true;
-      debugPrint('NotificationService initialized successfully');
+      debugPrint('NotificationService initialized successfully${kIsWeb ? ' (web mode)' : ''}');
     } catch (e) {
       debugPrint('Error initializing NotificationService: $e');
       rethrow;
@@ -109,10 +120,10 @@ class NotificationService {
       'Critical Alerts',
       description: 'Critical expiry and stock alerts requiring immediate attention',
       importance: Importance.max,
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound('alert_sound'),
-      enableVibration: true,
-      vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
+      playSound: !kIsWeb,
+      sound: kIsWeb ? null : RawResourceAndroidNotificationSound('alert_sound'),
+      enableVibration: !kIsWeb,
+      vibrationPattern: kIsWeb ? null : Int64List.fromList([0, 1000, 500, 1000]),
       ledColor: Color.fromARGB(255, 255, 0, 0),
     );
 
@@ -123,7 +134,7 @@ class NotificationService {
       description: 'High priority notifications for important events',
       importance: Importance.high,
       playSound: true,
-      enableVibration: true,
+      enableVibration: !kIsWeb,
     );
 
     // General notifications channel
@@ -163,34 +174,44 @@ class NotificationService {
   }
 
   /// Initialize Firebase messaging
+  /// Initialize Firebase messaging (only on supported platforms)
   Future<void> _initializeFirebaseMessaging() async {
-    // Configure Firebase messaging options
-    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    try {
+      _firebaseMessaging = FirebaseMessaging.instance;
+
+      // Configure Firebase messaging options
+      await _firebaseMessaging?.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } catch (e) {
+      debugPrint('Firebase messaging initialization failed: $e');
+      _firebaseMessaging = null;
+    }
   }
 
   /// Request notification permissions
   Future<void> _requestPermissions() async {
-    // Request Firebase messaging permissions
-    final NotificationSettings settings = await _firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: true,
-      provisional: false,
-      sound: true,
-    );
+    // Request Firebase messaging permissions (only if available)
+    if (_firebaseMessaging != null) {
+      final NotificationSettings settings = await _firebaseMessaging!.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: true,
+        provisional: false,
+        sound: true,
+      );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      debugPrint('User granted notification permissions');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-      debugPrint('User granted provisional notification permissions');
-    } else {
-      debugPrint('User declined or has not accepted notification permissions');
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        debugPrint('User granted notification permissions');
+      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+        debugPrint('User granted provisional notification permissions');
+      } else {
+        debugPrint('User declined or has not accepted notification permissions');
+      }
     }
 
     // Request local notification permissions for iOS
@@ -205,8 +226,13 @@ class NotificationService {
 
   /// Get FCM token and register with backend
   Future<void> _registerFCMToken() async {
+    if (_firebaseMessaging == null) {
+      debugPrint('Firebase messaging not available, skipping FCM token registration');
+      return;
+    }
+
     try {
-      _fcmToken = await _firebaseMessaging.getToken();
+      _fcmToken = await _firebaseMessaging!.getToken();
       if (_fcmToken != null) {
         debugPrint('FCM Token: $_fcmToken');
         
@@ -222,7 +248,7 @@ class NotificationService {
     }
 
     // Listen for token refresh
-    _firebaseMessaging.onTokenRefresh.listen((newToken) async {
+    _firebaseMessaging!.onTokenRefresh.listen((newToken) async {
       _fcmToken = newToken;
       await _apiService.registerFCMToken(newToken);
       
@@ -233,6 +259,11 @@ class NotificationService {
 
   /// Set up message handlers for different states
   void _setupMessageHandlers() {
+    if (_firebaseMessaging == null || kIsWeb) {
+      debugPrint('Firebase messaging not available${kIsWeb ? ' (web platform)' : ''}, skipping message handlers setup');
+      return;
+    }
+
     // Handle messages when app is in foreground
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
 
@@ -570,8 +601,6 @@ class NotificationService {
       details,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 

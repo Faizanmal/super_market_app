@@ -41,6 +41,26 @@ from .sustainability_models import (
     GreenSupplierRating,
 )
 
+from .gamification_models import (
+    GamificationProfile,
+    PointTransaction,
+    Badge,
+    UserBadge,
+)
+
+from .customer_features_models import (
+    ShoppingList,
+    ShoppingListItem,
+    DigitalReceipt,
+    ReceiptItem,
+    WarrantyTracker,
+    WarrantyClaim,
+)
+
+from .customer_app_models import (
+    ProductReview,
+)
+
 User = get_user_model()
 
 
@@ -327,71 +347,7 @@ class ProductFavorite(models.Model):
         return f"{self.user.email} - {self.product.name}"
 
 
-class ShoppingList(models.Model):
-    """Shopping list model for tracking items to purchase."""
-    
-    STATUS_CHOICES = [
-        ('active', 'Active'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
-    ]
-    
-    name = models.CharField(max_length=255, default='My Shopping List')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
-    notes = models.TextField(blank=True, null=True)
-    
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shopping_lists')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    completed_at = models.DateTimeField(blank=True, null=True)
-    
-    class Meta:
-        ordering = ['-created_at']
-    
-    def __str__(self):
-        return f"{self.name} - {self.status}"
-    
-    @property
-    def total_items(self):
-        return self.items.count()
-    
-    @property
-    def completed_items(self):
-        return self.items.filter(is_purchased=True).count()
-    
-    @property
-    def estimated_total(self):
-        """Calculate estimated total cost."""
-        return sum(item.estimated_cost for item in self.items.all())
 
-
-class ShoppingListItem(models.Model):
-    """Items in a shopping list."""
-    
-    shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    
-    # Can be free-form if product is not in inventory yet
-    item_name = models.CharField(max_length=255)
-    quantity = models.IntegerField(validators=[MinValueValidator(1)], default=1)
-    estimated_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
-    is_purchased = models.BooleanField(default=False)
-    notes = models.TextField(blank=True, null=True)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        ordering = ['is_purchased', '-created_at']
-    
-    def __str__(self):
-        return f"{self.item_name} x{self.quantity}"
-    
-    @property
-    def estimated_cost(self):
-        """Calculate total cost for this item."""
-        return self.quantity * self.estimated_price
 
 
 class PurchaseOrder(models.Model):
@@ -463,24 +419,7 @@ class PurchaseOrderItem(models.Model):
         return self.received_quantity >= self.quantity
 
 
-class ProductReview(models.Model):
-    """Customer reviews and ratings for products."""
-    
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_reviews')
-    
-    rating = models.IntegerField(validators=[MinValueValidator(1)], help_text="Rating from 1-5")
-    review_text = models.TextField(blank=True, null=True)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        unique_together = ('product', 'user')
-        ordering = ['-created_at']
-    
-    def __str__(self):
-        return f"{self.product.name} - {self.rating}/5"
+
 
 
 class Notification(models.Model):

@@ -126,6 +126,15 @@ class Product extends HiveObject {
     return expiryDate.difference(DateTime.now()).inDays;
   }
 
+  /// Alias for barcode/id - used in dashboard exports
+  String get sku => barcode ?? id;
+
+  /// Alias for quantity - used in dashboard exports
+  int get stockQuantity => quantity;
+
+  /// Alias for sellingPrice - used in dashboard exports
+  double get price => sellingPrice;
+
   /// Create a copy of the product with updated fields
   Product copyWith({
     String? id,

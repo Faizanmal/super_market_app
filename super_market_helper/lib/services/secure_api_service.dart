@@ -664,4 +664,55 @@ class SecureApiService {
       return {'success': false, 'error': e.toString()};
     }
   }
+  // ==================== Generic HTTP Methods ====================
+
+  /// Generic GET request
+  Future<Response> get(String path, {Map<String, dynamic>? queryParams, Options? options}) async {
+    try {
+      final response = await _dio.get(path, queryParameters: queryParams, options: options);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Generic POST request
+  Future<Response> post(String path, {Map<String, dynamic>? body, Map<String, dynamic>? queryParams, Options? options}) async {
+    try {
+      final response = await _dio.post(path, data: body, queryParameters: queryParams, options: options);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Generic PUT request
+  Future<Response> put(String path, {Map<String, dynamic>? body, Map<String, dynamic>? queryParams, Options? options}) async {
+    try {
+      final response = await _dio.put(path, data: body, queryParameters: queryParams, options: options);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Generic PATCH request
+  Future<Response> patch(String path, {Map<String, dynamic>? body, Map<String, dynamic>? queryParams, Options? options}) async {
+    try {
+      final response = await _dio.patch(path, data: body, queryParameters: queryParams, options: options);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Generic DELETE request
+  Future<Response> delete(String path, {Map<String, dynamic>? queryParams, Options? options}) async {
+    try {
+      final response = await _dio.delete(path, queryParameters: queryParams, options: options);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
